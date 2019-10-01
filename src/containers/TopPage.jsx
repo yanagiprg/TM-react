@@ -47,11 +47,9 @@ class TopPage extends Component {
   }
 }
 
-/* Storeのposts stateをTopPageコンポーネントのposts propsに渡したい */
 const mapStateToProps = (state) => {
   const { posts, isFetchingPosts, fetchPostsFailure } = state
   return { posts, isFetchingPosts, fetchPostsFailure }
 }
 
-/* ReduxのStoreと、このTopPageコンポーネントに接続する */
 export default connect(mapStateToProps)(TopPage)

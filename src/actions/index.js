@@ -12,6 +12,8 @@ export const ADD_POST_FAILURE = 'ADD_POST_FAILURE'
 export const FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS'
 export const IS_FETCHING_POST = 'IS_FETCHING_POST'
 export const FETCH_POST_FAILURE = 'FETCH_POST_FAILURE'
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS'
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS'
 
 const fetchPostsSuccess = posts => ({
   type: FETCH_POSTS_SUCCESS,
@@ -58,6 +60,16 @@ const isFetchingPost = (bool) => ({
   isFetchingPost: bool
 })
 
+const deletePostSuccess = id => ({
+  type: DELETE_POST_SUCCESS,
+  id
+})
+
+const updatePostSuccess = post => ({
+  type: UPDATE_POST_SUCCESS,
+  post
+})
+
 export const getPosts = () => {
   return async (dispatch) => {
     dispatch(isFetchingPosts(true))
@@ -90,17 +102,35 @@ export const addPost = ({title, content})  => {
     }
   }}
 
-  export const getPost = (id) => {
-    return (dispatch) => {
+  export const getPost = id => {
+    return async (dispatch) => {
       dispatch(isFetchingPost(true))
-      return axios.get(`${apiUrl}/posts/${id}`)
-        .then((response) => {
-          dispatch(isFetchingPost(false))
-          dispatch(fetchPostSuccess(response.data))
-        })
-        .catch((error) => {
-          dispatch(isFetchingPost(false))
-          dispatch(fetchPostFailure(true))
-        })
+      try {
+        const response = await axios.get(`${apiUrl}/posts/${id}`);
+        dispatch(isFetchingPost(false));
+        dispatch(fetchPostSuccess(response.data));
+      }
+      catch (error) {
+        dispatch(isFetchingPost(false));
+        dispatch(fetchPostFailure(true));
+      }
+    }
+  }
+
+  export const deletePost = id => {
+    return async (dispatch) => {
+      const response = await axios.delete(`${apiUrl}/posts/${id}`);
+      dispatch(deletePostSuccess(id));
+      history.push("/");
+    }
+  }
+
+  export const updatePost = post => {
+    const { id, title, content } = post
+    return async (dispatch) => {
+      const response = await axios.patch(`${apiUrl}/posts/${id}`, {title, content})
+      const data = response.data
+      dispatch(updatePostSuccess(data))
+      history.push(`/posts/${post.id}`)
     }
   }

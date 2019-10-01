@@ -5,8 +5,8 @@ import { Router, Switch, Route } from 'react-router-dom' //*これは公式と�
 import history from '../history' //*これは公式と違う https://stackoverflow.com/questions/42701129/how-to-push-to-history-in-react-router-v4
 import TopPage from '../containers/TopPage'
 import PostNew from '../containers/PostNew'
-// import PostShow from '../containers/PostShow'
-// import PostEdit from '../containers/PostEdit'
+import PostShow from '../containers/PostShow'
+import PostEdit from '../containers/PostEdit'
 import Navbar from '../containers/Navbar'
 
 const Root = ({ store }) => (
@@ -16,8 +16,8 @@ const Root = ({ store }) => (
       <Switch>
         <Route exact path="/" component={TopPage} />
         <Route exact path="/posts/new" component={PostNew} />
-        {/* <Route exact path="/posts/:id" component={PostShow} />
-        <Route exact path="/posts/:id/edit" component={PostEdit} /> */} */}
+        <Route exact path="/posts/:id" component={PostShow} />
+        <Route exact path="/posts/:id/edit" component={PostEdit} /> 
       </Switch>
     </Router>
   </Provider>

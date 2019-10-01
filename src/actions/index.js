@@ -9,6 +9,9 @@ export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE'
 export const IS_ADDING_POST = 'IS_ADDING_POST'
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE'
+export const FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS'
+export const IS_FETCHING_POST = 'IS_FETCHING_POST'
+export const FETCH_POST_FAILURE = 'FETCH_POST_FAILURE'
 
 const fetchPostsSuccess = posts => ({
   type: FETCH_POSTS_SUCCESS,
@@ -38,6 +41,21 @@ const addPostSuccess = (post) => ({
 const addPostFailure = (bool) => ({
   type: ADD_POST_FAILURE,
   addPostFailure: bool
+})
+
+const fetchPostSuccess = post => ({
+  type: FETCH_POST_SUCCESS,
+  post
+})
+
+const fetchPostFailure = (bool) => ({
+  type: FETCH_POST_FAILURE,
+  fetchPostFailure: bool
+})
+
+const isFetchingPost = (bool) => ({
+  type: IS_FETCHING_POST,
+  isFetchingPost: bool
 })
 
 export const getPosts = () => {
@@ -71,3 +89,18 @@ export const addPost = ({title, content})  => {
       dispatch(addPostFailure(true));
     }
   }}
+
+  export const getPost = (id) => {
+    return (dispatch) => {
+      dispatch(isFetchingPost(true))
+      return axios.get(`${apiUrl}/posts/${id}`)
+        .then((response) => {
+          dispatch(isFetchingPost(false))
+          dispatch(fetchPostSuccess(response.data))
+        })
+        .catch((error) => {
+          dispatch(isFetchingPost(false))
+          dispatch(fetchPostFailure(true))
+        })
+    }
+  }

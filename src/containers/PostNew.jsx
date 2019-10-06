@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addPost } from '../actions/index';
+import { addPost } from '../redux/post/post.async';
 
 class PostNew extends Component {
   state = {
@@ -23,7 +23,12 @@ class PostNew extends Component {
     const { isAddingPost, addPostFailure } = this.props
     return (
       <div>
-        {isAddingPost && <p>Failed to add post..</p>}
+        {isAddingPost &&
+          <p>Adding post now...</p>
+        }
+        {addPostFailure &&
+          <p>Failed to add post...</p>
+        }
         <h4>Add New Post</h4>
         <form onSubmit={this.handleSubmit}>
           <div>
@@ -54,7 +59,7 @@ class PostNew extends Component {
 }
 
 const mapStateToProps = state => {
-  const {isAddingPost, addPostFailure } = state
+  const { isAddingPost, addPostFailure } = state
   return { isAddingPost, addPostFailure }
 }
 

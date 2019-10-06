@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getPost, updatePost } from '../actions';
+import { getPost, updatePost } from '../redux/post/post.async';
 
 class PostEdit extends React.Component {
   constructor(props) {

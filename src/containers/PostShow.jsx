@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getPost, deletePost } from '../actions/index'
+import { getPost, deletePost } from '../redux/post/post.async'
 
 class PostShow extends Component {
   componentDidMount() {
@@ -41,7 +41,6 @@ class PostShow extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({ post: state.post, isFetchingPost: state.isFetchingPost, fetchPostFailure: state.fetchPostFailure })
 const mapStateToProps = ({ post, isFetchingPost, fetchPostFailure }) => ({ post, isFetchingPost, fetchPostFailure })
 
 const mapDispatchToProps = { getPost, deletePost }

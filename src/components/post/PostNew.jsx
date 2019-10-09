@@ -1,29 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
-import { addPost } from '../redux/post/post.async';
+import { addPost } from '../../redux/post/post.async.actions';
 
-class PostNew extends Component {
+class PostNew extends React.Component {
   state = {
     title: '',
     content: ''
   }
 
+  // 入力されたらsetStateで状態が更新される
   handleChange = event => {
     this.setState({[event.target.name]: event.target.value })
   }
 
+  // 送信された時の処理
   handleSubmit = event => {
+    // 前の時に送信された情報が残らないように空にする
     event.preventDefault()
+    // 送信される時のpropsをdispatchオブジェクトに代入
     const { dispatch } = this.props
+    // addPostアクションの引数にstateを入れてdispatchする
     dispatch(addPost(this.state))
   }
 
   render() {
-    const { isAddingPost, addPostFailure } = this.props
+    const { addingPost, addPostFailure } = this.props
     return (
+      // 情報を更新している時｜失敗した時の表示
       <div>
-        {isAddingPost &&
+        {addingPost &&
           <p>Adding post now...</p>
         }
         {addPostFailure &&
@@ -35,8 +41,10 @@ class PostNew extends Component {
             <input 
               type='text'
               name='title'
+              // 空投稿の禁止
               required
               value={this.state.title}
+              // 入力されたら状態が更新される
               onChange={this.handleChange}
               placeholder='Title'
             />
@@ -58,9 +66,10 @@ class PostNew extends Component {
   }
 }
 
+// このComponentのstateにpostsのactionを受け渡す
 const mapStateToProps = state => {
-  const { isAddingPost, addPostFailure } = state
-  return { isAddingPost, addPostFailure }
+  const { addingPost, addPostFailure } = state
+  return { addingPost, addPostFailure }
 }
 
 export default connect(mapStateToProps)(PostNew)

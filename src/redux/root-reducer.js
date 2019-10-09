@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
 
+
+// exportされたreducerとstoreを結びつけるためのもの
 import {
   postReducer,
   posts,
